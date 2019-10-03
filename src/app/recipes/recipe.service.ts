@@ -38,12 +38,9 @@ export class RecipeService {
     this.slService.addIngredients(ingredients);
   }
 
-  getRecipe (id: number | string ) {
-    const recipesObservale = of(this.recipes);
-      return recipesObservale.pipe(
-        // (+) before `id` turns the string into a number
-        map((recipeArr: Recipe[]) => recipeArr.find(recipe => recipe.id === +id))
-      );
+  getRecipe (id: number) {
+    
+      return this.recipes[id];
     }
   
 }

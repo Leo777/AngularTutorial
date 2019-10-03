@@ -2,7 +2,7 @@ import { Component, OnInit} from '@angular/core';
 
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable} from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -12,15 +12,19 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent implements OnInit {
-  recipe: Observable<Recipe>;
+  recipe: Recipe;
+  id: number;
 
-  constructor(private recipeService: RecipeService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private recipeService: RecipeService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.recipe = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) =>
-        this.recipeService.getRecipe(params.get('id')))
-    );
+    this.route.params.subscribe(
+      (params: Params) => { 
+        this.id = +params['id'];
+        this.recipe = this.recipeService.getRecipe(this.id);
+
+      }
+    )
   }
 
   // onAddToShoppingList() {
